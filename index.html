@@ -34,10 +34,7 @@
             font-style: normal;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-        }
+        
 
         .header-logo {
             height: 100px;
@@ -67,13 +64,26 @@
                     </li>
                 </ul>
             </nav>
-            <button class="md:hidden text-primary focus:outline-none">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
-                    </path>
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-primary focus:outline-none">
+                <svg id="menu-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+                <svg id="close-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
             </button>
+        </div>
+        <!-- Mobile Menu (hidden by default) -->
+        <div id="mobile-menu" class="md:hidden hidden bg-primary/95 w-full absolute left-0 right-0 shadow-lg">
+            <div class="container mx-auto px-4 py-3">
+                <ul class="space-y-4">
+                    <li><a href="#home" class="block text-white hover:text-secondary transition font-medium py-2" onclick="closeMobileMenu()">Home</a></li>
+                    <li><a href="#services" class="block text-white hover:text-secondary transition font-medium py-2" onclick="closeMobileMenu()">Services</a></li>
+                    <li><a href="#about" class="block text-white hover:text-secondary transition font-medium py-2" onclick="closeMobileMenu()">Why Choose Us</a></li>
+                    <li><a href="#contact" class="block text-white hover:text-secondary transition font-medium py-2" onclick="closeMobileMenu()">Contact</a></li>
+                </ul>
+            </div>
         </div>
     </header>
 
@@ -417,9 +427,9 @@
             <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Get in touch with our team for fast, reliable
                 AC services in Bahrain</p>
 
-            <div class="grid lg:grid-cols-2 gap-12">
+            <div class="grid lg:grid-cols-2 gap-12 relative">
                 <!-- Contact Information -->
-                <div class="bg-white p-8 rounded-xl shadow-lg">
+                <div class="bg-white p-8 rounded-xl shadow-lg relative">
                     <h3 class="text-xl font-semibold text-primary mb-6">Our Contact Details</h3>
 
                     <div class="space-y-5">
@@ -478,8 +488,8 @@
                     </div>
 
                     <!-- Map Embed -->
-                    <div class="mt-8 rounded-lg overflow-hidden shadow-md">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m24!1m12!1m3!1d752.365956513361!2d50.4964927484965!3d26.23322501292389!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m9!3e6!4m3!3m2!1d26.233591699999998!2d50.4977442!4m3!3m2!1d26.2335881!2d50.497797899999995!5e0!3m2!1sen!2s!4v1745066154829!5m2!1sen!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <div class="mt-8 rounded-lg overflow-hidden shadow-md hidden md:block" style="position: relative; height: 350px;">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m24!1m12!1m3!1d752.365956513361!2d50.4964927484965!3d26.23322501292389!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m9!3e6!4m3!3m2!1d26.233591699999998!2d50.4977442!4m3!3m2!1d26.2335881!2d50.497797899999995!5e0!3m2!1sen!2s!4v1745066154829!5m2!1sen!2s" style="position: relative; height: 100%; width: 100%;" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                 </div>
 
@@ -663,19 +673,31 @@
 
     <script src="./js/index.js"></script>
     <script>
-        // Mobile menu toggle functionality would go here
-        document.addEventListener('DOMContentLoaded', function () {
-            const mobileMenuButton = document.querySelector('button[class*="md:hidden"]');
-            const mobileMenu = document.querySelector('nav[class*="md:hidden"]');
-
-            mobileMenuButton.addEventListener('click', function () {
-                // Toggle mobile menu visibility
-                if (mobileMenu.classList.contains('hidden')) {
-                    mobileMenu.classList.remove('hidden');
-                } else {
-                    mobileMenu.classList.add('hidden');
-                }
-            });
+        // Mobile menu functionality
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        const closeIcon = document.getElementById('close-icon');
+        
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('hidden');
+            menuIcon.classList.toggle('hidden');
+            closeIcon.classList.toggle('hidden');
+        }
+        
+        function closeMobileMenu() {
+            mobileMenu.classList.add('hidden');
+            menuIcon.classList.remove('hidden');
+            closeIcon.classList.add('hidden');
+        }
+        
+        mobileMenuButton.addEventListener('click', toggleMobileMenu);
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
+                closeMobileMenu();
+            }
         });
     </script>
     <script>
